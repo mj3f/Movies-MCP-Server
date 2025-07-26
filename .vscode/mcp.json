@@ -1,0 +1,12 @@
+{
+  "servers": {
+    "Movies-MCP-Server": {
+      "type": "stdio",
+      "command": "dotnet",
+      "args": ["run", "--project", "Movies-MCP-Server.csproj"],
+      "env": {
+        "WEATHER_CHOICES": "sunny,humid,freezing"
+      }
+    }
+  }
+}
