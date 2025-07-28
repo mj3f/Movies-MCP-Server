@@ -53,6 +53,15 @@ internal class MovieQueryTools
     }
 
     [McpServerTool]
+    [Description("Get the lowest-rated movies ordered by vote average.")]
+    public string GetLowestRatedMovies(
+        [Description("Number of movies to return (default: 10)")] int count = 10)
+    {
+        var movies = _movieDataService.GetLowestRatedMovies(count);
+        return JsonSerializer.Serialize(movies, _jsonOptions);
+    }
+
+    [McpServerTool]
     [Description("Get the most popular movies ordered by popularity score.")]
     public string GetMostPopularMovies(
         [Description("Number of movies to return (default: 10)")] int count = 10)

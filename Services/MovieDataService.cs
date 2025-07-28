@@ -14,6 +14,49 @@ public class MovieDataService
         LoadMoviesFromCsv();
     }
 
+
+    public IEnumerable<Movie> GetAllMovies() => _movies;
+
+    public IEnumerable<Movie> SearchMoviesByTitle(string title)
+    {
+        return _movies.Where(m => m.Title.Contains(title, StringComparison.OrdinalIgnoreCase));
+    }
+
+    public IEnumerable<Movie> GetMoviesByYear(int year)
+    {
+        return _movies.Where(m => m.ReleaseDate.Year == year);
+    }
+
+    public IEnumerable<Movie> GetMoviesByLanguage(string language)
+    {
+        return _movies.Where(m => m.OriginalLanguage.Equals(language, StringComparison.OrdinalIgnoreCase));
+    }
+
+    public IEnumerable<Movie> GetTopRatedMovies(int count = 10)
+    {
+        return _movies.OrderByDescending(m => m.VoteAverage).Take(count);
+    }
+
+    public IEnumerable<Movie> GetLowestRatedMovies(int count = 10)
+    {
+        return _movies.OrderBy(m => m.VoteAverage).Take(count);
+    }
+
+    public IEnumerable<Movie> GetMostPopularMovies(int count = 10)
+    {
+        return _movies.OrderByDescending(m => m.Popularity).Take(count);
+    }
+
+    public Movie? GetMovieById(int id)
+    {
+        return _movies.FirstOrDefault(m => m.Id == id);
+    }
+
+    public IEnumerable<Movie> GetMoviesByRatingRange(double minRating, double maxRating)
+    {
+        return _movies.Where(m => m.VoteAverage >= minRating && m.VoteAverage <= maxRating);
+    }
+
     private void LoadMoviesFromCsv()
     {
         if (!File.Exists(_csvFilePath))
@@ -86,42 +129,5 @@ public class MovieDataService
 
         values.Add(currentValue);
         return values;
-    }
-
-    public IEnumerable<Movie> GetAllMovies() => _movies;
-
-    public IEnumerable<Movie> SearchMoviesByTitle(string title)
-    {
-        return _movies.Where(m => m.Title.Contains(title, StringComparison.OrdinalIgnoreCase));
-    }
-
-    public IEnumerable<Movie> GetMoviesByYear(int year)
-    {
-        return _movies.Where(m => m.ReleaseDate.Year == year);
-    }
-
-    public IEnumerable<Movie> GetMoviesByLanguage(string language)
-    {
-        return _movies.Where(m => m.OriginalLanguage.Equals(language, StringComparison.OrdinalIgnoreCase));
-    }
-
-    public IEnumerable<Movie> GetTopRatedMovies(int count = 10)
-    {
-        return _movies.OrderByDescending(m => m.VoteAverage).Take(count);
-    }
-
-    public IEnumerable<Movie> GetMostPopularMovies(int count = 10)
-    {
-        return _movies.OrderByDescending(m => m.Popularity).Take(count);
-    }
-
-    public Movie? GetMovieById(int id)
-    {
-        return _movies.FirstOrDefault(m => m.Id == id);
-    }
-
-    public IEnumerable<Movie> GetMoviesByRatingRange(double minRating, double maxRating)
-    {
-        return _movies.Where(m => m.VoteAverage >= minRating && m.VoteAverage <= maxRating);
     }
 }

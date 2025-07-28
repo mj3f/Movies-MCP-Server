@@ -15,7 +15,6 @@ builder.Services.AddSingleton<MovieDataService>();
 builder.Services
     .AddMcpServer()
     .WithStdioServerTransport()
-    // .WithTools<RandomNumberTools>()
     .WithTools<MovieQueryTools>();
 
 await builder.Build().RunAsync();
